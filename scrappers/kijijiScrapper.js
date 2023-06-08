@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import KijijiPosting from "./modules/Posting.js";
+import KijijiPosting from "../modules/Posting.js";
 
 async function scrapeWebsite() {
   // Create a new browser instance
