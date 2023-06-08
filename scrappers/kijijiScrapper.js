@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 import KijijiPosting from "../modules/Posting.js";
-
+import { populateKijijiPostings } from "../db.js";
 async function scrapeWebsite() {
   // Create a new browser instance
 
@@ -65,7 +65,7 @@ async function scrapeWebsite() {
     );
     postings.push(posting);
   }
-  console.log(postings);
+  await populateKijijiPostings(postings);
 }
 
 scrapeWebsite();

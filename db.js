@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import KijijiPosting from "./modules/Posting.js";
 
 const uri =
   "mongodb+srv://justinpeng1209:pjc031209@clusterwebscrapper.aeknvag.mongodb.net/?retryWrites=true&w=majority";
@@ -28,8 +29,6 @@ async function test() {
         console.log("Document inserted successfully");
         console.log(result);
       }
-
-      // Close the MongoDB connection when you're done
       mongoose.connection.close();
     });
   } catch (error) {
@@ -37,4 +36,30 @@ async function test() {
   }
 }
 
+export async function populateKijijiPostings(postings) {
+  try {
+    // Connect to MongoDB
+    await mongoose.connect(uri);
+    const db = mongoose.connection.db;
+
+    // Access the "postings" collection
+    const collection = db.collection("postings");
+
+    // Convert KijijiPosting objects to plain JavaScript objects
+    const postingDocuments = postings.map((posting) => ({ ...posting }));
+
+    // Insert the array of documents
+    collection.insertMany(postingDocuments, (err, result) => {
+      if (err) {
+        console.error("Error inserting documents:", err);
+      } else {
+        console.log("Documents inserted successfully");
+        console.log(result);
+      }
+      mongoose.connection.close();
+    });
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+  }
+}
 test();
