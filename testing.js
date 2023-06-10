@@ -32,12 +32,32 @@ async function getTargetURLFromCenterAndRadius(areaCode, radius) {
   await delayNSecond(1);
   const applyButton = await page.$x("//button[contains(text(), 'Apply')]");
   await applyButton[0].click();
-  await delayNSecond(2);
+  await delayNSecond(10);
   const currentURL = page.url();
 
-  console.log(customizeURLWithRadius(currentURL, radius));
-  await page.goto(customizeURLWithRadius(currentURL, radius));
-  await delayNSecond(2);
+  const newURL = customizeURLWithRadius(currentURL, radius);
+  await page.goto(newURL);
+  await delayNSecond(5);
+
+  console.log(newURL);
+
+  const allCategoryButton = await page.$(".label-2246511109");
+  await allCategoryButton.click();
+
+  const realEstateButton = await page.$x(
+    "//div[contains(text(), 'Real Estate')]"
+  );
+  await realEstateButton[0].click();
+  await delayNSecond(5);
+
+  const searchButton = await page.$('button[name="SearchSubmit"]');
+  await searchButton.click();
+  await delayNSecond(5);
+
+  const div = await page.$("div.slider-2889926755");
+  const link = await div.$("a");
+  await link.click();
+  await delayNSecond(5);
 
   await page.screenshot({ path: "screenshot.png", fullPage: true });
   await browser.close();
